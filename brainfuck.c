@@ -106,13 +106,28 @@ void interpret( char *prog )
 }
 
 
-void main( void )
+void main( int argc, char*argv[] )
 {
-   unsigned char prog[256];
+   FILE *fp;
+   unsigned char prog[1024];
    pidx = 0;
-//   strcpy( prog, "++>+++++ [<+>-] ++++ ++++ [ < +++ +++ > - ] < ." );
-//   strcpy( prog, "++++++++ [ >++++ [ >++ >+++ >+++ >+ <<<<- ] >+ >+ >- >>+ [<] <- ]" );
-    strcpy( prog, "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.," );
+
+   if ( argc < 2 )
+   {
+      printf("Usage is:\n\t./bf <prog.bf>\n");
+      return;
+   }
+
+   fp = fopen(argv[1], "r");
+   if ( fp == NULL )
+   {
+      printf( "%s is not a valid .bf file.\n", argv[1] );
+      return;
+   }
+
+   fgets( prog, 1024, fp );
+
+   fclose( fp );
 
    interpret( prog );
 
